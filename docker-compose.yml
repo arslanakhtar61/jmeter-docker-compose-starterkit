@@ -1,7 +1,7 @@
-version: "2"
+version: "3.8"
 services:
   jmeter-master:
-    image : rbillon59/jmeter:latest
+    image : jmeter_base:latest
     container_name: jmeter-master
     links:
       - influxdb
@@ -26,8 +26,10 @@ services:
       - ./log:/temp/
     depends_on: 
       - jmeter-slave
+
   jmeter-slave:
-    image: rbillon59/jmeter:latest
+    image: jmeter_base:latest
+    build: .
     links:
       - influxdb
     env_file:
@@ -48,8 +50,10 @@ services:
       - ./scenario:/scenario
       - ./data:/data
       - ./log:/opt/jmeter/logs
+
+
   influxdb:
-    image: influxdb:1.7.4
+    image: influxdb:latest
     container_name: influxdb
     ports:
       - "8086"
@@ -57,6 +61,7 @@ services:
       - ./influx-grafana/env.influxdb
     volumes:
     - ./influx-grafana/influx-data:/var/lib/influxdb
+
 
   grafana:
     image: grafana/grafana:latest
@@ -70,4 +75,6 @@ services:
     volumes:
       - ./influx-grafana/grafana/provisioning/:/etc/grafana/provisioning/
       - ./influx-grafana/grafana/dashboards/:/var/lib/grafana/dashboards/
+
+
 

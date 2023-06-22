@@ -13,7 +13,7 @@ git clone <REPO>
 
 1. Write your JMeter scenario and put in the *scenario* folder : You can open the JMeter GUI with :
 ```shell
-sh apache-jmeter-5.2.1/bin/jmeter
+sh apache-jmeter-5.5/bin/jmeter
 ```
 
 
@@ -30,7 +30,7 @@ source .env && JMX=my-scenario.jmx sudo docker-compose -p jmeter up --scale jmet
 - The scale command is used to create the necessary amount of slaves injectors
 
 
-4. You can visualize your performance test on host:30000 with the grafana attached. (login: admin password: admin)
+4. You can visualize your performance test on localhost:30000 with the grafana attached. (login: admin password: admin)
 6. At the end of the test, JMeter will create a report in the *report* directory
 5. When you are done you can do 
 ```shell
@@ -39,7 +39,7 @@ docker-compose -p jmeter down
 to shutdown influxdb, grafana
 
 Tips : 
-- Your influxdb datas are persisted in the influx-grafana folder, so you can relaunch a test with your historical datas on it.  
+- Your influxdb data is persisted in the influx-grafana folder, so you can relaunch a test with your historical datas on it.  
 - If you need to update your JVM configuration, you can update the environment variables in the docker compose file
 - If you specified hosts / ports / protocol etc.. directly in jour jmx, the environment variable will ***NOT*** override them.
 - You can run a multi injector test by changing your .env file with nbInjector=X with the number of injectors you will need  
@@ -62,3 +62,7 @@ Options can be set in the .env file or *docker-compose.yml* file directly
 *rampup* optional : Set the time needed to create the total threads number (dafault 60)  
 *nbInjector* optional : Set the number of injectors needed to run the test (default 1)
 *SLAVE=1* required on slave : As it's the same docker images for controller and slaves, it's used to distinguish both
+
+```shell
+docker build -t jmeter_base:latest --progress=plain .
+```
